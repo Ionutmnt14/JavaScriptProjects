@@ -3,6 +3,39 @@ const paletteContainer = document.querySelector(".palette-container");
 
 generateBtn.addEventListener("click", generatePalette);
 
+//This is for copy Button
+paletteContainer.addEventListener("click", (e) => {
+  if (e.target.classList.contains("copy-btn")) {
+    const hexValue = e.target.previousElementSibling.textContent;
+
+    navigator.clipboard
+      .writeText(hexValue)
+      .then(() => showSuccess(e.target))
+      .catch((e) => alert(e));
+  } else if (e.target.classList.contains("color")) {
+    const hexValue =
+      e.target.nextElementSibling.querySelector(".hex-value").textContent;
+    navigator.clipboard
+      .writeText(hexValue)
+      .then(() =>
+        showSuccess(e.target.nextElementSibling.querySelector(".copy-btn"))
+      )
+      .catch((e) => alert(e));
+  }
+});
+
+function showSuccess(element) {
+  element.classList.remove("far", "fa-copy");
+  element.classList.add("fas", "fa-check");
+
+  element.style.color = "#48bb78";
+  setTimeout(() => {
+    element.classList.remove("fas", "fa-check");
+    element.classList.add("far", "fa-copy");
+    element.style.color = "";
+  }, 1500);
+}
+
 function generatePalette() {
   const colors = [];
   for (let i = 0; i < 5; i++) {
